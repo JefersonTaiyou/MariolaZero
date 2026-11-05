@@ -39,14 +39,15 @@ def anda_mm(distancia, vel_max=50):
 
 
 try:
-    anda_mm(300)
+    anda_mm(298)
     time.sleep(0.5)
     motores.estado()
     print(f'pedi 300 mm, andou {andado_mm():.0f} mm')
-    anda_mm(-150)
-    time.sleep(0.5)
-    motores.estado()
-    print(f'pedi -150 mm, andou {andado_mm():.0f} mm')
+    
 finally:
+    motores.velocidade_motores(-40, 40)
+    motores.atualiza_motores()
+    time.sleep(0.9)
     motores.velocidade_motores(0, 0)
     motores.atualiza_motores()
+    time.sleep(0.5)

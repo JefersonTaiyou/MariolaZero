@@ -32,7 +32,7 @@ except ImportError:          # robô sem câmera
 PRETO = 50
 PRATA_C = 165        # claridade C do TCS: branco ~127, prata ~200 (os LEDs de 5 mm fazem o prata brilhar)
 IR_PRATA = (50, 120)  # no prata o IR lê ~80, MENOS que no branco. Fora disso não é prata:
-                      # abaixo = tem linha preta embaixo; acima = sensor perto do chão (lombada)
+# abaixo = tem linha preta embaixo; acima = sensor perto do chão (lombada)
 
 
 def eh_prata(r, ir=None):
@@ -185,8 +185,8 @@ class AreaResgate:
         # chega perto olhando
         perdidas = 0
         for _ in range(12):
-            if abs(d.angulo) > 3:
-                r.gira(d.angulo)
+            if abs(d.angulo) > 5:
+                r.gira(d.angulo*0.6)
             if d.distancia < 260:
                 break
             passo = min(d.distancia - 230, 300)
@@ -371,7 +371,7 @@ class AreaResgate:
                     continue
             if longe >= 2:
                 # vão na parede da direita (duas leituras seguidas): entra nele e vê o que tem no chão
-                r.anda_mm(120, vel=30, para_se=lambda: self.preto_largo() or self.prata() or r.frente_mm() < 60)
+                r.anda_mm(100, vel=30, para_se=lambda: self.preto_largo() or self.prata() or r.frente_mm() < 60)
                 self.vira(-90)
                 r.anda_mm(300, vel=28, para_se=lambda: self.preto_largo() or self.prata() or r.frente_mm() < 100)
                 if self.preto_largo():

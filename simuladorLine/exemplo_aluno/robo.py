@@ -29,7 +29,7 @@ try:
 except ImportError:
     TCS34725 = None
 
-TRACAO = 'auto'               # '4x4', 'esteira' ou 'auto'
+TRACAO = '4x4'               # '4x4', 'esteira' ou 'auto'
 
 # ------------------------------------------------------------------ constantes (A MEDIR no robô)
 DIAMETRO_RODA = {'4x4': 70.0, 'esteira': 40.0}     # mm (roda / polia da esteira)

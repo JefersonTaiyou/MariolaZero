@@ -26,6 +26,7 @@ KD = 6.0
 PRETO = 50          # abaixo disso o canal está vendo preto (0 = preto, 100 = branco)
 DIST_OBSTACULO = 70 # mm
 GAP_MAX_MM = 260    # gap da regra: até 20 cm
+DESVIO = 'E'
 
 
 def escuro(v):
@@ -44,7 +45,6 @@ def posicao_linha(ir):
 def mostra(txt):
     if simdebug:
         simdebug.texto(txt)
-
 
 class Seguidor:
     def __init__(self, r):
@@ -138,22 +138,23 @@ class Seguidor:
         return False
 
     def obstaculo(self):
-        """Contorna pela direita: gira 90°, anda, volta para o lado da linha até achar."""
         r = self.r
-        mostra('obstáculo: contornando')
+        lado = 'DIREITA' if DESVIO == 'D' else 'ESQUERDA'
+        mostra('obstáculo: contornando ' + lado)
+        direcao = -1 if DESVIO == 'D' else 1
         r.anda_mm(-30, vel=30)
-        r.gira(-90)
-        r.anda_mm(170, vel=35)
-        r.gira(90)
-        r.anda_mm(420, vel=35)          # passa o obstáculo inteiro (robô + obstáculo + folga)
-        r.gira(90)
+        r.gira(direcao*90)
+        r.anda_mm(130, vel=35)
+        r.gira(-direcao*90)
+        r.anda_mm(400, vel=35)          # passa o obstáculo inteiro (robô + obstáculo + folga)
+        r.gira(-direcao*90)
 
         def achou():
             ir = r.reflexao()
             return min(ir) < PRETO
         r.anda_mm(260, vel=30, para_se=achou)
         r.anda_mm(60, vel=30)
-        self.procura_linha_girando(-1, max_graus=120)
+        self.procura_linha_girando(direcao*1, max_graus=120)
 
     # ------------------------------------------------------------------ laço principal
     def passo(self):
