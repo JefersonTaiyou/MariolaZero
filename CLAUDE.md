@@ -13,11 +13,14 @@ equipes Titãs da Robótica). Tudo em português: código, comentários, commits
 | `firmware/mariola/` | o `.hex` do `placaBrickVendra` (firmware de 26/10/2026, md5 `eb34acab`), `grava_mariola.sh` (roda no brick: acha a porta pela regra do `portas.py`, avisa se a porta está em uso, pede ENTER com o **RESET na mão**, `avrdude -F -patmega328pb -carduino -b 115200 -D`; `-n` só confere), `grava_mariola.bat` (copia para `~/firmware_mariola` e roda por `ssh -t`) e `LEIAME.md`. `.gitattributes` da pasta força LF no `.sh`. Firmware novo? Troque o `.hex` e a versão/md5 no LEIAME. O script antigo `~/gravaMicrocontrolador.sh` do brick usava `/dev/ttyUSB0` fixo |
 | `libs/` | bibliotecas **reais** do Mariola (Python, rodam no robô): motores, placaControleMotor, placaControleServo, giroscopio, vl53, sensorCorReflexao, teclado, tela, botoes... |
 | `exemplos/`, `menuPrincipal/`, `telemetria/` | programas do robô real |
-| `simuladorLine/` | simulador da RoboCupJunior Rescue Line (tem `CLAUDE.md` próprio) |
-| `simuladorMaze/` | simulador da RoboCupJunior Rescue Maze (tem `CLAUDE.md` próprio) |
-| `simuladorChallenge/` | simulador da RCB Challenge (CBR 2026), começado em 30/10/2026: arena, cubos e plataformas, mecanum, juiz e o robô real **Bombertinho** (`robo_bombertinho.json`, 31/10: duas garras de paralelogramo, medido no DXF do Julio); os robôs provisórios continuam; **falta o adversário** (tem `CLAUDE.md` próprio) |
+| `autoteste_boberto/`, `autoteste_challenge/`, `autoteste_maze/` | autoteste do robô (14/11/2026), **um projeto por robô** com o **mesmo código** (só o `robo.json` e o `LEIAME.md` mudam: mudou um `.py`, copie para os outros dois). O `testes/maze.py` (`paredes`, `cores_piso`, `andar`: CONTAGENS_POR_MM pelo VL53 da frente e 4 giros de 90°) só aparece com a chave `maze` do `robo.json` (números da equipe Maze, commit `75a33d1`); o `envia.bat` do `autoteste_maze` vai para o IP da equipe Maze (192.168.1.202). Menu na tela/teclado que testa peça por peça (sistema e hub USB/`dmesg`, tela e teclado, brick, LEDs, buzzer ou servos comuns, VL53/TCS no mux, giroscópio, sensor de linha, pinos, câmeras, placas de motor, servos inteligentes, motores, estresse) contra o `robo.json` (tirado do código da equipe; só aparecem os testes do que o robô tem) e grava `relatorios/`. Pelo terminal (o `~/meu_venv` já vem ativado no login do SSH): `python3 main.py giroscopio` roda um teste só, `?` (ou `lista`) lista os testes, `--terminal` responde as perguntas no SSH, `--automatico [--motores]` roda sem perguntar. `libs/` deles é cópia das `libs/`. Testado nos simuladores da Line, da Challenge e da Maze (e num Bombertinho com defeitos de propósito), não num robô real |
+| `simuladorLine/` | simulador da RoboCupJunior Rescue Line (tem `CLAUDE.md` próprio). Mapa a partir de foto de pista de verdade: `ferramentas/foto_mapa.py` + `ferramentas/MAPA_DA_FOTO.md`, e a skill `.claude/skills/mapa-da-foto/` (06/11/2026; para usar na competição). Ladrilhos próprios (13/11/2026): pista de treino de foto ou desenho, de 1 ou mais ladrilhos, em `ladrilhos_proprios/`, pela `ferramentas/ladrilho_proprio.py` + `LADRILHO_PROPRIO.md` e a skill `.claude/skills/ladrilho-proprio/` |
+| `simuladorMaze/` | simulador da RoboCupJunior Rescue Maze (tem `CLAUDE.md` próprio). Mapa a partir de foto de labirinto de verdade: `ferramentas/foto_mapa.py` + `ferramentas/MAPA_DA_FOTO.md` e a skill `.claude/skills/mapa-da-foto-maze/` (06/11/2026; calibra também por pontos de fuga; a primeira foto real, de um canto e com dois níveis, não fechou o mapa) |
+| `simuladorChallenge/` | simulador da RCB Challenge (CBR 2026), começado em 30/10/2026: arena, cubos e plataformas, mecanum, juiz e o robô real **Bombertinho** (`robo_bombertinho.json`, 31/10: duas garras de paralelogramo, medido no DXF do Julio); os robôs provisórios continuam; desde 07/11 empilha cubos nas plataformas (até 5, regra seção 6; exemplo `exemplo_bombertinho/empilha.py`); **falta o adversário** (tem `CLAUDE.md` próprio) |
+| `simuladorCasa/` | simulador de uma casa para o **robô de casa** (Bombertinho com uma pinça e câmera na cabeça da garra, que guarda objetos do chão numa caixa), começado em 12/11/2026 a partir do `simuladorChallenge`: cômodos, paredes, móveis, prismas coloridos, caixa, câmera 3D pelo `cv2.VideoCapture`, `ferramentas/planta_dxf.py` (planta DXF → casa; `casas/casa_julio.json` é a casa dele) o exemplo `exemplo_casa/main.py` (5/5 na casa de exemplo) e a localização (`exemplo_casa/mapa.py`, `localiza.py` = filtro de partículas com encoders, giroscópio e VL53, `navega.py`, `passeio.py`: 15 cômodos da casa dele, 97 m, erro médio 20 mm) e as duas coisas juntas (`arruma.py`: patrulha os cômodos, põe os objetos no mapa pela câmera e leva até a caixa pela rota) e o cérebro (`cerebro.py`, `habilidades.py`, `conversa.py`, `testa_cerebro.py`: comandos em português com 7 ferramentas, três tipos de modelo: Claude pela API (chave em `CEREBRO_CHAVE_API`, paga pelo crédito mensal do plano Max; padrão `claude-haiku-5-5`, 19-20/20 a ~US$ 0,0005 por comando; o Opus custa ~30x mais e o Julio não quer usá-lo à toa), Claude pela mensalidade via Claude Code/`claude-agent-sdk` e modelo local no Ollama (`qwen3.5:9b` 20/20)) e a voz (`voz.py`: Piper para falar, faster-whisper para ouvir, obedece quando a frase começa por "Bombertinho"; testada só em circuito fechado, sem microfone de verdade; a voz do robô, por enquanto, é a `cadu` do Piper com o tom mais fino; a voz tem de ser gerada localmente, sem internet) (tem `CLAUDE.md` próprio; quarta cópia de `libs_mariola`) |
 | `curso/` | curso para os alunos (público): 18 módulos em Markdown, `referencia/`, `codigos/`, `curso-mariola.html` (tem `CLAUDE.md` próprio) |
-| `professor/` | material do professor: **NUNCA vai para o GitHub** (`.gitignore` = `*`; tem `CLAUDE.md` próprio) |
+| `professor/` | material do professor: **NUNCA vai para o GitHub** (`.gitignore` = `*`; tem `CLAUDE.md` próprio). `professor/especialista/` = bot de Telegram dos alunos (06/11/2026, na VM da Igro, usuário `mariola`), que usa a skill pública `.claude/skills/especialista-mariola/` (mapa do repositório e problemas conhecidos: mantenha atualizada quando mudar uma lib ou o curso). O mesmo `bot.py` roda também como o bot da equipe Maze (`ESPECIALISTA=maze`, serviço `maze-bot`), com a skill `.claude/skills/especialista-maze/` (mapa, regras 2026 em resumo e problemas da Maze: mantenha atualizada quando mudar o `simuladorMaze` ou os módulos 12/16) |
+| `ferramentas/emulador_avr/` | emulador de AVR (ATmega328PB e ATtiny1616) que roda o `.hex` dos firmwares dos motores com um modelo de ponte H, motor e encoder (10/11/2026). `compila.py` (antigo = um commit, novo = a pasta do firmware), `testa_brick.py`, `testa_placa.py`, `testa_polaridade.py`, `grafico.py`; `LEIAME.md` explica. Mexeu no `placaBrickVendra.ino` ou no `placaControleMotor.ino`? `python compila.py --so-novo` e rode os três testes. `builds/` fica fora do git |
 | `simuladorLine.zip` | zip antigo do simulador; o zip atual para os laboratórios sai de `simuladorLine/ferramentas/monta_portatil.py` |
 
 ## Regras
@@ -28,7 +31,7 @@ equipes Titãs da Robótica). Tudo em português: código, comentários, commits
 * **`libs/` roda no robô de verdade.** Não mude sem ele pedir. Os simuladores usam as libs reais sem
   alteração (a pasta do programa primeiro, depois `libs_mariola/` de cada simulador, que é uma cópia).
   Se mudar algo em `libs/`, avise que as cópias em `simuladorLine/libs_mariola/` e
-  `simuladorMaze/libs_mariola/` ficaram diferentes.
+  `simuladorMaze/libs_mariola/` (e em `autoteste_*/libs/`) ficaram diferentes.
 * O Julio trabalha no **Windows**. Os simuladores também precisam rodar em PCs de laboratório com
   Windows travado (sem instalar nada, sem mexer no PATH). `.bat` com quebra de linha CRLF.
 * Repositório no GitHub: `https://github.com/juliovendramini/MariolaZero` (branch `main`).
@@ -44,12 +47,13 @@ Os simuladores emulam estes firmwares byte a byte. Na dúvida sobre um comportam
 
 | pasta | placa |
 |---|---|
-| `placaBrickVendra` | ATmega328PB dentro do Mariola (2 motores com encoder, 10 LEDs RGB, botões) |
-| `placaControleMotor` | placa de controle de motor independente do Julio (barramento serial, endereço por placa) |
+| `placaBrickVendra` | ATmega328PB dentro do Mariola (2 motores com encoder, 10 LEDs RGB, botões). **10/11/2026, ainda não testado num robô nem commitado** (o commit `595fd9c` é o estado anterior): correção dos trancos dos motores no começo/fim dos programas (lista no cabeçalho do `.ino`): troca do pino de direção junto com o PWM (`trocaDirecaoComPWM`, força o estouro do timer), parar não troca a direção, HOLD rearmado ao voltar do timeout e ao mudar o modo de freio, leitura atômica do encoder, `Servo::detach()` espera o pulso terminar, o timeout desliga as pontes H de uma vez (`desativaTimers_0_1`: com o motor parado em HIGH/HIGH, baixar a direção antes do PWM era um pulso de ré). **Polaridade do encoder automática (10/11, mesma situação):** a calibração vê se com potência positiva o encoder conta para baixo e passa a inverter a **contagem** (`encoderInvertido[]`, troca a rotina de interrupção; o PWM nunca muda, então potência e motores 3/4 ficam iguais). Antes disso motor e encoder com polaridades diferentes faziam o PID e o HOLD dispararem a 100%. Na EEPROM não há campo novo: o valor "horário" negativo é a polaridade. A calibração não grava se o encoder não contou, vale na hora (o `0xF3` antigo só valia depois de religar) e EEPROM vazia vale como sem calibração (potência direta). Estado no último byte da resposta do `0xF4` (4 bits por motor: calibrado, invertido, resultado). O `.hex` da pasta é o novo (md5 `ce9cfb46`, compilado com `arduino-cli compile -b arduino:avr:nano328pb:cpu=atmega328`); o de `firmware/mariola/` continua o de 26/10 até o Julio testar. Tudo isso foi testado no `ferramentas/emulador_avr/` (antigo x novo), não num robô |
+| `placaControleMotor` | placa de controle de motor independente do Julio (barramento serial, endereço por placa). 10/11/2026 (não testado na placa; `ab5a195` é o estado anterior): o reset por falta de comunicação continua como era (a placa sem comando reinicia a cada ~10,5 s; o Julio quis manter), mas as 3 piscadas do LED ao ligar/reiniciar são feitas com o loop já rodando (`atualizaPiscadaBoot`; antes eram 0,6 s de `delay()` no `setup()` sem escutar o barramento), `MODO_SET_FREIO` com o motor parado rearma o hold; polaridade do encoder automática na calibração, como no brick (`encoderInvertido`, sinal do valor "horário" na EEPROM, estado no byte [2] das respostas de calibração; `.hex` md5 `1397ef38`). Compila com `megaTinyCore:megaavr:atxy6:chip=1616,clock=20internal,millis=enabled` (no `arduino-cli` o passo final de cópia falha, mas o `.hex` sai no `--build-path`) |
 | `placaControleServo` | placa do servo inteligente (ATtiny, MG90S). Firmware de 21/10/2026: controle proporcional (padrão) ou liga-desliga, polaridade, comandos 65000-65003. A pasta tem também a lib `placaControleServo.py` (a mesma de `libs/`, desde 22/10) |
 | `sensorLinhaPro1616` | sensor de linha/cor Pro1616 (ATtiny1616). O `sensorCorReflexao.py` de lá é cópia da V2 atual (atualizado em 20/10). O `sensorLinhaPro1616.py` é a lib do EV3 (pybricks), igual à de `scriptsEv3dev`, com o mesmo classificador de cor da V2 |
 | `brickSimples` | libs do brick Paçoca (copiadas em `simuladorLine/pacoca/libs_pacoca/`) |
 | `sensorLinhaPro` | versão **antiga** do sensor de linha do Paçoca (ATmega328P, não controla os LEDs dos TCS). Só curiosidade: o Paçoca usa o Pro1616 |
+| `bmi160-lego` | giroscópio serial do Mariola (`libs/giroscopio.py`): Nano/ATmega328P + BMI160, 115200, é um repositório git próprio. `Ros` = a versão em uso (50 Hz pela interrupção no pino 2, `deltaTime` fixo: amostra perdida = ângulo lento). `fifo-100hz` (04/11/2026, commit `458ce15` "bora!!!", no GitHub, com os `.hex`) = FIFO do BMI160 lida por polling a 100 Hz, sem perder amostra (ordem do quadro da FIFO: giroscópio e depois acelerômetro); X/Y por um **vetor da gravidade** girado com os 3 eixos do giroscópio (antes era um filtro por eixo, que atrasava ~1 s nos giros em cima da rampa; mesmo protocolo, mesma constante de tempo, `asin` em vez de `atan2` para caber em ~0,7 ms por amostra); I2C a 400 kHz com `setWireTimeout` e erro contado em `BMI160.errosI2C` (a lib imprimia texto na serial do robô; uma leitura falha descarta a FIFO). Medido num simulador de ATmega do scratchpad, não testado no sensor real. Os simuladores não imitam o filtro (dão a inclinação certa na hora, como o firmware novo). Grava-se pelos `.bat` com os dois `.hex` da pasta (Nano, Optiboot) |
 
 ## Placas (EAGLE 9, fora deste repositório, em `Documents\eagle\ROBOTICA\`)
 
@@ -108,6 +112,34 @@ Os simuladores emulam estes firmwares byte a byte. Na dúvida sobre um comportam
 * Menu principal roda com cwd=/home/banana e stdout em arquivo (bufferizado): nos programas, caminhos a
   partir de `__file__` e `line_buffering`.
 * `Portas.abre_porta_serial` com o conversor ausente devolve um Serial fechado (não `None`).
+* 10/11/2026 (`libs/motores.py` e `libs/placaControleMotor.py`, copiadas para os `exemplos/` e os três
+  `libs_mariola`; as cópias das equipes em `professor/*/codigo*/libs/` **não** foram mexidas): o
+  `Motores.__del__` envia o comando de parar também com `Motores(False)`; `para_motores()` zera os 4
+  motores e mantém o tipo do último comando (antes ia sempre como 4x4, e com HOLD os motores 3 e 4
+  copiavam as correções do 1 e do 2); o `PlacaControleMotor.__del__` manda o motor parar e não fecha
+  mais a porta (que é de todas as placas). No mesmo dia, para a polaridade automática dos firmwares:
+  `Motores.estado_calibracao_motores()` (novo; `None` com firmware antigo) e as chaves `'calibrado'`,
+  `'encoder_invertido'` e `'resultado'` em `PlacaControleMotor.calibrar()`/`obter_calibracao()`
+  (`'encoder_ativo'` passou a ser o bit 0 do byte, não mais `== 1`). O `sim/firmware.py` dos três
+  simuladores responde o byte novo (sempre calibrado, sem inversão) e a calibração do brick leva 30 s.
+* 12/11/2026 (`libs/motores.py`, `placaControleMotor.py` e `portas.py`, copiadas para os `exemplos/` e os
+  três `libs_mariola`; não testado num robô): a equipe Maze teve `Erro ao ler o estado dos motores` com
+  `usb 1-1: reset high-speed USB device` no `dmesg`, o hub USB interno (atrás dele: `_SERIAL0` a `SERIAL3`,
+  os conversores do Mariola e das placas; `SERIAL4`-`6` são UART do Banana Pi). Causa provável elétrica
+  (5 V caindo ou ruído dos motores), ainda não confirmada no brick. A lib desistia em 10 ms. Agora toda
+  conversa do `Motores` passa pelo `_conversa()` (menos o `pid_motor`, que tem pausas próprias): espera a
+  resposta até `TEMPO_RESPOSTA` (50 ms), reabre a porta pelo `Portas.reabre_porta_serial()` (novo: acha a
+  porta de novo pelo `by-path`, porque o `ttyUSB` pode mudar, e reabre o mesmo objeto; o
+  `abre_porta_serial` grava `ser.porta_mariola`) e manda de novo por até `TEMPO_RECUPERACAO` (3 s; 0,5 s no
+  `__del__`); depois, `Exception` com a mensagem antiga + o motivo. Comando com ângulo (o firmware soma o
+  ângulo a partir de onde o motor está): antes de reenviar pergunta o estado (`ATUALIZA`); motor que estava
+  parado e agora gira = o comando chegou, não vai de novo. `falhas_comunicacao` conta. O
+  `PlacaControleMotor.envia_comando()` reabre a porta (a mesma de todas as placas) quando o write/read dá
+  erro. De quebra: `obtem_calibracao_motores()` e `calibra_motores()` não deixam mais o comando no
+  `lista_motores[0]` (o próximo `atualiza_motores()` sem um `velocidade_...()` antes pedia de novo).
+  Testado com um brick falso (scratchpad: perde ida/volta, atrasa, porta cai e volta como `ttyUSB4`, ângulo,
+  brick que some) e nos simuladores (Maze 415/321,2 s, Line 295/71,5 s, Challenge iguais às referências).
+  Para a equipe Maze: `professor/maze2026/libs_para_equipe_20261112/` (as três, com `from libs.portas`).
 
 ## Hardware que aparece em todo lugar
 
@@ -135,6 +167,21 @@ Os simuladores emulam estes firmwares byte a byte. Na dúvida sobre um comportam
   formatação). O `gpiod` falso dos simuladores responde `get_info()` como o PIO principal.
 * Giroscópio do Mariola: Z em graus, acumulando, positivo no sentido horário. O curso usa
   `z()` positivo = esquerda e troca o sinal numa função só.
+* VL53L0X travando depois de Ctrl+C (investigado num Mariola em 09/11/2026, mux 0x70 no `i2c-1`):
+  o driver I2C do H618 (`i2c-mv64xxx`, `wait_event_timeout`) não corta transação no meio, então não
+  é o barramento preso. É protocolo: várias sequências da lib fazem `0xFF=1` ... `0xFF=0`; morrendo
+  no meio, o sensor fica no banco 1 e a inicialização seguinte (escrita no banco errado) o trava: ele
+  passa a dar NACK em tudo menos 0xFF e, no banco 0, 0xBF. Lib antiga: 8 travamentos em 300 Ctrl+C,
+  todos dentro dessas janelas; 150 inicializações sem Ctrl+C, nenhum. Solução no `libs/vl53.py`
+  (`_reset_software()`, no `__init__` e no `recover()`): `0xFF=0` e `0xBF=0` nos dois endereços,
+  `0xBF=1` no 0x29 e espera o `0xC0 = 0xEE` (o sensor volta ao 0x29, como no XSHUT); 0 travamentos
+  em 400 Ctrl+C (21 deixaram o sensor sujo), ~7 ms a mais para 3 sensores. O `recover()` antigo
+  (fechar/reabrir o canal do mux) não destravava. Copiado para `exemplos/04` e os três
+  `libs_mariola` e, por merge (mantendo o `print`/`I2C_LOCK` das equipes), para as cópias em
+  `professor/*/codigo*/libs/`. Scripts do teste no brick: `~/teste_vl53/` (`estressa2.py N`,
+  `diag.py`, `recupera.py`; `exemplo04/testa_recover.py` trava o sensor de propósito, na 1ª
+  tentativa: `0x80=1`, `0xFF=1`, `0x00=0` e `_init_sensor()` por cima, e confere o `recover()`).
+  O `exemplos/04-vl53l0x/main.py` explica isso aos alunos e usa `recover()` no `except`.
 * Servos inteligentes do Julio (lib `placaControleServo`) no mesmo barramento serial (SERIAL1) das
   placas de motor.
 * Conectores: `documentação/Conectores.pdf`/`.odp` (fonte, o Julio edita) e `documentação/Conectores.md`
