@@ -2,7 +2,6 @@
  "formato": "simuladorLine/1",
  "regra": "RoboCupJunior Rescue Line 2026",
  "nome": "pista_foto",
- "_comentario": "Montado a partir de uma foto de um campo de competição (04/11/2026). Ladrilhos oficiais mais parecidos com os da foto; o início foi escolhido (na foto não dá para saber onde é). O tabuleiro do fundo fica meio ladrilho deslocado na foto; aqui ele está na grade. Ele é inclinado no campo real (sobe para o fundo); aqui com 5°, chute: troque INCLINACAO.",
  "largura": 8,
  "altura": 7,
  "inicio": [
@@ -17,7 +16,7 @@
    "x": 4,
    "y": 0,
    "z": 0,
-   "tipo": "tile-82",
+   "tipo": "branco",
    "rot": 0,
    "inclinacao": {
     "sobe": "N",
@@ -28,8 +27,8 @@
    "x": 5,
    "y": 0,
    "z": 0,
-   "tipo": "tile-30",
-   "rot": 90,
+   "tipo": "branco",
+   "rot": 270,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -39,8 +38,8 @@
    "x": 6,
    "y": 0,
    "z": 0,
-   "tipo": "tile-1",
-   "rot": 0,
+   "tipo": "branco",
+   "rot": 270,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -50,8 +49,8 @@
    "x": 7,
    "y": 0,
    "z": 0,
-   "tipo": "tile-16_2",
-   "rot": 270,
+   "tipo": "branco",
+   "rot": 0,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -89,8 +88,8 @@
    "x": 4,
    "y": 1,
    "z": 0,
-   "tipo": "tile-0",
-   "rot": 90,
+   "tipo": "tile-24",
+   "rot": 270,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -100,7 +99,7 @@
    "x": 5,
    "y": 1,
    "z": 0,
-   "tipo": "tile-0",
+   "tipo": "tile-30",
    "rot": 90,
    "inclinacao": {
     "sobe": "N",
@@ -111,8 +110,8 @@
    "x": 6,
    "y": 1,
    "z": 0,
-   "tipo": "branco",
-   "rot": 0,
+   "tipo": "tile-79",
+   "rot": 270,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -122,8 +121,8 @@
    "x": 7,
    "y": 1,
    "z": 0,
-   "tipo": "tile-0",
-   "rot": 90,
+   "tipo": "tile-16_2",
+   "rot": 270,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -175,7 +174,7 @@
    "x": 4,
    "y": 2,
    "z": 0,
-   "tipo": "tile-46",
+   "tipo": "tile-23",
    "rot": 270,
    "inclinacao": {
     "sobe": "N",
@@ -186,7 +185,7 @@
    "x": 5,
    "y": 2,
    "z": 0,
-   "tipo": "tile-5",
+   "tipo": "tile-24",
    "rot": 180,
    "inclinacao": {
     "sobe": "N",
@@ -273,8 +272,8 @@
    "x": 4,
    "y": 3,
    "z": 0,
-   "tipo": "tile-6",
-   "rot": 90,
+   "tipo": "tile-16",
+   "rot": 0,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -284,8 +283,8 @@
    "x": 5,
    "y": 3,
    "z": 0,
-   "tipo": "branco",
-   "rot": 0,
+   "tipo": "tile-7",
+   "rot": 270,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -295,8 +294,9 @@
    "x": 6,
    "y": 3,
    "z": 0,
-   "tipo": "branco",
+   "tipo": "tile-18",
    "rot": 0,
+   "checkpoint": true,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -306,8 +306,8 @@
    "x": 7,
    "y": 3,
    "z": 0,
-   "tipo": "branco",
-   "rot": 0,
+   "tipo": "tile-16_2",
+   "rot": 270,
    "inclinacao": {
     "sobe": "N",
     "graus": 5
@@ -435,7 +435,7 @@
    "y": 6,
    "z": 0,
    "tipo": "branco",
-   "rot": 0
+   "rot": 270
   },
   {
    "x": 3,

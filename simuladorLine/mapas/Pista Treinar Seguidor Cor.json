@@ -1,0 +1,186 @@
+{
+ "formato": "simuladorLine/1",
+ "regra": "RoboCupJunior Rescue Line 2026",
+ "nome": "Pista Treinar Seguidor Cor",
+ "largura": 6,
+ "altura": 4,
+ "inicio": [
+  0,
+  3,
+  0
+ ],
+ "inicio_dir": "L",
+ "tempo": 480.0,
+ "ladrilhos": [
+  {
+   "x": 0,
+   "y": 0,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 0
+  },
+  {
+   "x": 1,
+   "y": 0,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 0
+  },
+  {
+   "x": 2,
+   "y": 0,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 90
+  },
+  {
+   "x": 3,
+   "y": 0,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 0
+  },
+  {
+   "x": 4,
+   "y": 0,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 0
+  },
+  {
+   "x": 5,
+   "y": 0,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 0
+  },
+  {
+   "x": 0,
+   "y": 1,
+   "z": 0,
+   "tipo": "tile-16_2",
+   "rot": 90
+  },
+  {
+   "x": 1,
+   "y": 1,
+   "z": 0,
+   "tipo": "tile-16",
+   "rot": 180
+  },
+  {
+   "x": 2,
+   "y": 1,
+   "z": 0,
+   "tipo": "tile-8",
+   "rot": 0,
+   "checkpoint": true
+  },
+  {
+   "x": 3,
+   "y": 1,
+   "z": 0,
+   "tipo": "tile-35",
+   "rot": 0
+  },
+  {
+   "x": 4,
+   "y": 1,
+   "z": 0,
+   "tipo": "tile-7",
+   "rot": 90
+  },
+  {
+   "x": 5,
+   "y": 1,
+   "z": 0,
+   "tipo": "tile-30",
+   "rot": 180
+  },
+  {
+   "x": 0,
+   "y": 2,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 0
+  },
+  {
+   "x": 1,
+   "y": 2,
+   "z": 0,
+   "tipo": "chegada",
+   "rot": 180
+  },
+  {
+   "x": 2,
+   "y": 2,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 0
+  },
+  {
+   "x": 3,
+   "y": 2,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 0
+  },
+  {
+   "x": 4,
+   "y": 2,
+   "z": 0,
+   "tipo": "branco",
+   "rot": 0
+  },
+  {
+   "x": 5,
+   "y": 2,
+   "z": 0,
+   "tipo": "tile-0",
+   "rot": 90,
+   "checkpoint": true
+  },
+  {
+   "x": 0,
+   "y": 3,
+   "z": 0,
+   "tipo": "tile-0",
+   "rot": 0
+  },
+  {
+   "x": 1,
+   "y": 3,
+   "z": 0,
+   "tipo": "tile-19",
+   "rot": 0
+  },
+  {
+   "x": 2,
+   "y": 3,
+   "z": 0,
+   "tipo": "tile-13",
+   "rot": 0
+  },
+  {
+   "x": 3,
+   "y": 3,
+   "z": 0,
+   "tipo": "tile-11",
+   "rot": 0
+  },
+  {
+   "x": 4,
+   "y": 3,
+   "z": 0,
+   "tipo": "tile-0",
+   "rot": 0
+  },
+  {
+   "x": 5,
+   "y": 3,
+   "z": 0,
+   "tipo": "tile-6",
+   "rot": 90
+  }
+ ]
+}
