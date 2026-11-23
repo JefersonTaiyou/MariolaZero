@@ -130,20 +130,28 @@ de conflito. O `main.py` da branch cai sem câmera (o `except` do import faz `te
 depois chama `tem_branco()`; com OpenCV, procura os `.png` em `/home/banana/maze2026`): para rodar,
 `professor/maze2026/simulador/main_sem_camera.py` troca só a detecção de vítimas. A ligação veio do
 `robo.py`/`sensores.py`/`constantes.py` da branch, que a equipe acertou no robô real em 04-05/11:
-* motores: Mariola canal 1 invertido; placas no `SERIAL2`: id **72** na dianteira esquerda, id **5**
-  invertida na direita (até 05/11 era o contrário, como os nomes do `defs.py` antigo; o Julio tinha
-  confirmado em 29/10, mas a equipe trocou no robô);
+* **portas novas desde 16/11/2026** (commit `a707453` "ajeitei as portas"; json atualizado no mesmo dia,
+  a pedido do Julio): placas no `SERIAL1` (id **8** na dianteira esquerda, id **16** invertida na
+  direita), Pro1616 no `SERIAL5`, VL53 borda esq `I2C2`, meio esq `I2C1`, borda dir `I2C7`, meio dir
+  `I2C8`, frente `I2C6`. Código da equipe anterior ao `a707453` não abre as portas com este json;
+* de 05/11 a 16/11: placas no `SERIAL2`, id 72 à esquerda e 5 invertida à direita (antes de 05/11, o
+  contrário, como o `defs.py` antigo), Pro1616 no `SERIAL6`, VL53 borda esq `I2C1`, meio esq `I2C3`,
+  borda dir `I2C6`, meio dir `I2C7`, frente `I2C8`;
+* motores: Mariola canal 1 invertido;
 * giroscópio no `SERIAL4`, **diminuindo para a direita** (`z_horario_positivo: false`; "o giroscópio
   diminui ao girar à direita", medido pela equipe);
-* 5 VL53: borda esq `I2C1` (13 mm para dentro), meio esq `I2C3`, borda dir `I2C6`, meio dir `I2C7`
-  (37 mm para dentro: o código desconta do meio agora) e frente `I2C8` (posição estimada). Até 05/11
-  eram 4, com o I2C6 no meio e o I2C7 (−37) na borda direita;
-* para-choque P1/P8.
+* 5 VL53: desde 17/11 (commit `9df9aae`, json atualizado no mesmo dia a pedido do Julio) o meio esq
+  fica 30 mm para dentro e a borda dir 10 mm (o código desconta esses dois, com os nomes trocados:
+  `DESCONTO_BORDA_ESQ` no meio esquerdo, `DESCONTO_MEIO_DIR` na borda direita); de 16/11 a 17/11 eram
+  a borda esq (13 mm) e o meio dir (37 mm). A frente tem posição estimada. Até 05/11 eram 4;
+* para-choque P2 (esq) / P7 (dir) desde 17/11 (`9df9aae`); antes P1/P8.
 
-Contagens: 440 por volta no Mariola e 880 na placa desde 05/11/2026 (`CONTAGENS_POR_MM = 2` da
-equipe, ajustado no robô; ainda falta a volta da roda à mão). De 03/11 a 05/11 foram 940/1880 (medida
-do Boberto, que não valeu para este robô); antes, 481/962 (1 cm = 1000/45,7 do código antigo). A
-calibração (16 no Mariola, 32 nas placas, do `calibracao_manual(32, -32)`) não mudou: ~109 rpm livres.
+Contagens: 400 por volta no Mariola e 800 na placa desde 17/11/2026 (`CONTAGENS_POR_MM = 100 / 55`
+da equipe, que já estava assim no `75a33d1` de 14/11; ainda falta a volta da roda à mão). De 05/11 a
+17/11 o json teve 440/880 (`CONTAGENS_POR_MM = 2`). De 03/11 a 05/11 foram 940/1880 (medida do
+Boberto, que não valeu para este robô); antes, 481/962 (1 cm = 1000/45,7 do código antigo). A
+calibração (16 no Mariola, 32 nas placas, do `calibracao_manual(32, -32)`) não mudou: ~120 rpm livres
+com 400 contagens (~109 com 440).
 O `maze2026_simplificado` do professor usa `CONTAGENS_POR_VOLTA = 440` desde 05/11 (antes, 940: com
 este json ele andava o dobro do que pedia).
 
@@ -224,13 +232,16 @@ regravado a partir de uma cópia antiga. O `robo.json` certo tem os 6 sensores e
   o servo 4), servo 4 com ângulo ≤ 180 (e o Timer2 dos servos) volta a porta para servo. Emulado nos
   dois simuladores (`FirmwareMariola.leds_porta4`, só o estado: não é desenhado), e `fake_hw` aceita
   de 0xEC a 0xFD.
-* Mariola, Timer2 (firmware de 26/10/2026; especificação em `documentação/Motores.md`): servos,
-  ventoinha (0xF2) e buzzer (0xEC-0xEF) dividem o timer e **o primeiro uso fica com ele até
-  reiniciar** (`FirmwareMariola.modo_timer2`: 0 livre, 1 servos, 2 ventoinha, 3 buzzer; reinicia na
-  rodada nova). Conta como uso: `ENVIA_SERVOS` com algum ângulo ≤ 180, o primeiro 0xF2, o primeiro
-  som/tom (parar e 0xEC não contam). Ventoinha ou buzzer primeiro desligam os servos. O dono errado é
-  ignorado: 0xF2 responde 0xF2 igual, 0xFD responde 0xFD igual, o buzzer responde status 0. O timeout
-  de 5 s solta os servos e para o buzzer, não a ventoinha.
+* Mariola, Timer2 (firmware de **15/11/2026** desde 17/11 nos 4 simuladores; especificação em
+  `documentação/Motores.md`): ventoinha (0xF2) e buzzer (0xEC-0xEF) dividem o timer e o pino 11, e
+  **o primeiro uso fica com ele até reiniciar** (`FirmwareMariola.modo_timer2`: 0 livre, 2 ventoinha,
+  3 buzzer; reinicia na rodada nova). Conta como uso: o primeiro 0xF2, o primeiro som/tom (parar e
+  0xEC não contam). Os servos usam o **Timer3** e funcionam junto com qualquer um dos dois (só o servo
+  6, no pino 11, para; o simulador só tem os servos 1 a 4). O dono errado é ignorado: 0xF2 responde
+  0xF2 igual, o buzzer responde status 0. O timeout de 5 s solta os servos e para o buzzer, não a
+  ventoinha. Até 17/11 o simulador imitava o firmware de 26/10 (servos também na disputa, modo 1,
+  ventoinha ou buzzer desligando os servos), que é o que os robôs ainda têm até o Julio gravar o novo.
+  O `libs_mariola/motores.py` dos 4 simuladores é o `libs/motores.py` com a regra nova.
 * Mariola, buzzer: respostas de 3 bytes `[comando, status, modo do Timer2]`. O som não toca no PC: o
   simulador só guarda até quando ele toca (`buzzer_fim`, tempo simulado), com a duração calculada como
   o `buzzerGeraSegmento` do firmware (velocidade, varreduras em passos de 10 ms, 250 ms entre as
